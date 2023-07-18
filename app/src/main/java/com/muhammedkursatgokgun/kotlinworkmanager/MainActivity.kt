@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -34,8 +35,17 @@ class MainActivity : AppCompatActivity() {
         WorkManager.getInstance(this).enqueue(myWorkRequest)
 
  */
-        var myWorkRequest : PeriodicWorkRequest = PeriodicWorkRequestBuilder<RefleshDatabase>(15,TimeUnit.MINUTES)
+        /*var myWorkRequest : PeriodicWorkRequest = PeriodicWorkRequestBuilder<RefleshDatabase>(15,TimeUnit.MINUTES)
             .build()
-        WorkManager.getInstance(this).enqueue(myWorkRequest)
+        WorkManager.getInstance(this).enqueue(myWorkRequest)*/
+
+        var workRequest : OneTimeWorkRequest = OneTimeWorkRequestBuilder<RefleshDatabase>()
+            .setConstraints(constraint)
+            .setInputData(data)
+            .build()
+        WorkManager.getInstance(this).beginWith(workRequest)
+            .then(workRequest)
+            .then(workRequest)
+            .enqueue()
     }
 }
